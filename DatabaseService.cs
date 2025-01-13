@@ -1,19 +1,22 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using System.Security.Cryptography.X509Certificates;
 using Microsoft.Data.Sqlite;
 using Newtonsoft.Json;
+using System.IO;
+
 
 public class DatabaseService
 {
-    private readonly string _connectionString;
+    private readonly string _connectionString;
 
-    public DatabaseService()
-    {
-        // Utiliser le chemin absolu fourni pour la base de données
-        string databasePath = @"C:\Users\Thibaut Joncour\source\repos\MagicNumber\wwwroot\db.sqlite3";
-        _connectionString = $"Data Source={databasePath}";
-    }
+
+    public DatabaseService()
+    {
+        string currentDirectory = Directory.GetCurrentDirectory();
+        string databasePath = Path.Combine(currentDirectory, "wwwroot", "db.sqlite3");
+        _connectionString = $"Data Source={databasePath}";
+    }
 
     // Récupérer tous les enregistrements d'une table et retourner un JSON
     public List<Dictionary<string, object>> GetData(string query, Dictionary<string, object> parameters = null)
