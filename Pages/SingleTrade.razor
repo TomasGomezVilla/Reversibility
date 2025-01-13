@@ -1,0 +1,181 @@
+﻿@page "/singletrade"
+@using Newtonsoft.Json
+@inject DatabaseService DatabaseService
+@inject IJSRuntime JSRuntime
+
+<style>
+.card-container {
+    display: flex;
+    gap: 1rem; /* Espacement entre les cartes */
+    justify-content: space-between; /* Aligne les cartes avec des espaces */
+    flex-wrap: wrap; /* Permet le passage à une nouvelle ligne si nécessaire */
+}
+
+.card {
+    flex: 1;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 1rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+    overflow: hidden; /* Assure que le contenu reste dans la carte */
+
+}
+
+.card h3 {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    font-size: 1.25rem;
+    color: #333;
+}
+
+.card table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.card table th,
+.card table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+.card table th {
+    background-color: #f5f5f5;
+    font-weight: bold;
+}
+
+.card-container {
+    display: flex;
+    gap: 1rem;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.card .table-container {
+    max-height: 300px; /* Ajustez la hauteur maximale si nécessaire */
+    overflow: auto; /* Ajoute un défilement si le contenu dépasse */
+}
+
+.no-data {
+    color: #999;
+    font-style: italic;
+}
+</style>
+
+<input @bind="SearchTerm" placeholder="Entrez un N° d'historique..." />
+<button @onclick="ApplyFilter">Rechercher</button>
+
+<!-- Conteneur pour aligner les cartes côte à côte -->
+<div class="card-container">
+    <!-- Première carte -->
+    <div class="card">
+        <h3>Trades Characteristics</h3>
+        @if (FilteredData.Any())
+        {
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Libellé</th>
+                            <th>Valeur</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    @foreach (var row in FilteredData.FirstOrDefault())
+                    {
+                            <tr>
+                                <td>@row.Key</td>
+                                <td>@row.Value</td>
+                            </tr>
+                    }
+                    </tbody>
+                </table>
+        }
+        else
+        {
+                <p class="no-data">Aucune donnée trouvée pour ce numéro d'historique.</p>
+        }
+    </div>
+
+    <!-- Deuxième carte -->
+    <div class="card">
+        <h3>Audit</h3>
+        <table id="dataTable" class="table table-striped">
+            <!-- Les données seront insérées dynamiquement -->
+        </table>
+    </div>
+</div>
+
+<div>
+     <div class="card">
+    <h3 class="title">Flux</h3>
+    <table id="dataTable1" class="table table-striped">
+        <!-- Le contenu sera généré dynamiquement par JS -->
+    </table>
+</div>
+</div>
+
+
+
+
+
+@code {
+    private string SearchTerm = string.Empty;
+    private string jsonaudit, jsonEch = string.Empty;
+
+
+
+    private List<Dictionary<string, object>> FilteredData = new();
+    private List<Dictionary<string, object>> FilteredEche = new();
+    private List<Dictionary<string, object>> FilteredAudit = new();
+
+
+    // Méthode appelée lorsque l'utilisateur clique sur "Rechercher"
+    private async Task ApplyFilter()
+    {
+
+
+
+        // Construction de la requête SQL
+        string query = "SELECT * FROM Hist_Ope WHERE [N° histo] = @Input";
+        string query2 = "SELECT * FROM audit WHERE [N° histo] = @Input";
+        string query3 = "SELECT * FROM Ech_Ope WHERE [N° histo] = @Input";
+
+
+        var parameters = new Dictionary<string, object>
+        {
+            { "@Input", SearchTerm }
+        };
+
+        FilteredData = DatabaseService.GetData(query, parameters);
+        FilteredAudit = DatabaseService.GetData(query2, parameters);
+        FilteredEche = DatabaseService.GetData(query3, parameters);
+
+
+        // Sérialisation des données en JSON
+        jsonEch = FilteredEche.Any() ? JsonConvert.SerializeObject(FilteredEche) : null;
+        jsonaudit = FilteredAudit.Any() ? JsonConvert.SerializeObject(FilteredAudit) : null;
+
+        await JSRuntime.InvokeVoidAsync("resetDataTable1");
+        await JSRuntime.InvokeVoidAsync("resetDataTable");
+
+        // Appel de la fonction JavaScript pour afficher les données dans un tableau
+        if (!string.IsNullOrEmpty(jsonEch))
+        {
+            await JSRuntime.InvokeVoidAsync("initializeDataTable1", jsonEch);
+
+        }
+        if (!string.IsNullOrEmpty(jsonaudit))
+        {
+            await JSRuntime.InvokeVoidAsync("initializeDataTable", jsonaudit);
+
+        }
+
+        // Paramètres pour la requête SQL
+
+
+        // Récupération des données depuis la base de données
+    }
+}
+

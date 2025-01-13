@@ -1,0 +1,165 @@
+﻿@page "/filter"
+@using Newtonsoft.Json
+@inject DatabaseService DatabaseService
+@inject IJSRuntime JSRuntime
+
+<h3 class="title">Single Trade</h3>
+
+<!-- Déclaration du CSS pour réduire la taille des tableaux et la police -->
+<style>
+    /* Style pour la table */
+table {
+    font-size: 12px;
+    width: 100%; /* La table occupe toute la largeur disponible */
+    margin: 0 auto; /* Centrer horizontalement la table */
+    border-collapse: collapse; /* Fusionner les bordures des cellules */
+}
+
+/* Style pour les cellules de la table */
+table td, table th {
+    padding: 8px; /* Augmenter le padding pour éviter que le texte se chevauche */
+    text-align: left; /* Alignement à gauche des données */
+    word-wrap: break-word; /* Permet de couper les mots longs si nécessaire */
+}
+
+/* Style pour les colonnes (pour éviter la superposition du texte) */
+table th, table td {
+    max-width: 200px; /* Limite la largeur des colonnes */
+    min-width: 100px; /* Limite la largeur minimale des colonnes */
+    overflow: hidden; /* Cache tout texte qui dépasse */
+    text-overflow: ellipsis; /* Affiche des points de suspension si le texte est trop long */
+    white-space: normal; /* Permet aux textes longs de se diviser sur plusieurs lignes si nécessaire */
+}
+
+/* Style pour l'en-tête */
+table th {
+    background-color: #f2f2f2; /* Légère couleur de fond pour les en-têtes */
+    font-weight: bold; /* Gras pour les en-têtes */
+}
+
+/* Ombre pour la table */
+table {
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    border: 1px solid #ddd;
+}
+
+/* Ajouter de la couleur à la ligne active */
+table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+table tr:hover {
+    background-color: #f1f1f1;
+}
+    /* Style pour les titres */
+    .title {
+        font-family: 'Arial', sans-serif;
+        font-size: 1.5em;
+        font-weight: bold;
+        color: #3b5998; /* Couleur bleue élégante */
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 15px; /* Ajoute de l'espace sous le titre */
+        text-align: center;
+        padding: 5px;
+        background-color: #f0f0f0; /* Fond clair pour les titres */
+        border-radius: 8px;
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Ombre subtile */
+        transition: all 0.3s ease; /* Animation de transition */
+    }
+
+    .title:hover {
+        color: #ffffff;
+        background-color: #3b5998; /* Change la couleur de fond au survol */
+        box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.2); /* Ombre plus accentuée au survol */
+    }
+
+    /* Personnalisation du bouton */
+    button {
+        padding: 8px 16px;
+        background-color: #3b5998;
+        color: white;
+        font-weight: bold;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+        background-color: #334e68;
+    }
+
+</style>
+
+<!-- Champ de recherche et bouton -->
+<input @bind="SearchTerm" placeholder="Entrez un N° d'historique..." />
+<button @onclick="ApplyFilter">Rechercher</button>
+
+<!-- Table où les résultats seront affichés -->
+<div>
+    <h3 class="title">Trade Characteristics</h3>
+    <table id="dataTable" class="table table-striped">
+        <!-- Le contenu sera généré dynamiquement par JS -->
+    </table>
+</div>
+
+<div>
+    <h3 class="title">Flux</h3>
+
+    <table id="dataTable1" class="table table-striped">
+        <!-- Le contenu sera généré dynamiquement par JS -->
+    </table>
+</div>
+
+
+
+@code {
+    private string SearchTerm = string.Empty;
+
+    private List<Dictionary<string, object>> FilteredData = new();
+    private List<Dictionary<string, object>> FilteredEche = new();
+
+    private string json, jsonEcheance = string.Empty;
+
+    // Méthode qui est appelée lorsque l'utilisateur clique sur "Rechercher"
+    private async Task ApplyFilter()
+    {
+        // Construction de la requête SQL avec un filtre basé sur l'entrée de l'utilisateur
+        string query = "SELECT * FROM Hist_Ope WHERE [N° histo] = @Input";
+        string query2 = "SELECT * FROM Ech_Ope WHERE [N° histo] = @Input";
+
+
+        // Paramètre pour la requête SQL
+        var parameters = new Dictionary<string, object>
+        {
+            { "@Input", SearchTerm }
+        };
+
+        // Récupération des données filtrées depuis la base de données
+        FilteredData = DatabaseService.GetData(query, parameters);
+        FilteredEche = DatabaseService.GetData(query2, parameters);
+
+        // Sérialisation des données en JSON
+        json = FilteredData.Any() ? JsonConvert.SerializeObject(FilteredData) : null;
+        jsonEcheance = FilteredEche.Any() ? JsonConvert.SerializeObject(FilteredEche) : null;
+
+        await JSRuntime.InvokeVoidAsync("resetDataTable1");
+        await JSRuntime.InvokeVoidAsync("resetDataTable");
+
+
+
+        // Appel de la fonction JavaScript pour afficher les données dans un tableau
+        if (!string.IsNullOrEmpty(json))
+        {
+            await JSRuntime.InvokeVoidAsync("initializeDataTable", json);
+
+        }
+
+        if (!string.IsNullOrEmpty(jsonEcheance))
+        {
+            await JSRuntime.InvokeVoidAsync("initializeDataTable1", jsonEcheance);
+
+        }
+    }
+}

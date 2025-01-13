@@ -1,0 +1,178 @@
+﻿@page "/bond-pricing"
+@inherits BondPricing
+@inject IJSRuntime JsRuntime
+
+<style>
+
+ .chart-container {
+        display: flex;
+        justify-content: center; /* Centre le graphique horizontalement */
+        align-items: center; /* Centre le graphique verticalement */
+        margin: 2rem 0; /* Espacement autour du graphique */
+    }
+
+    .chart-item {
+        width: 80%; /* Le graphique occupera 80% de la largeur de l'écran */
+        max-width: 800px; /* Limite la largeur maximale */
+        height: 500px; /* Hauteur définie pour le graphique */
+        background-color: #f9f9f9; /* Couleur d'arrière-plan (optionnel) */
+        padding: 1rem; /* Espace intérieur */
+        border: 1px solid #ddd; /* Bordure légère */
+        border-radius: 8px; /* Coins arrondis */
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Légère ombre */
+    }
+
+.card-container {
+    display: flex;
+    gap: 1rem; /* Espacement entre les cartes */
+    justify-content: space-between; /* Aligne les cartes avec des espaces */
+    flex-wrap: wrap; /* Permet le passage à une nouvelle ligne si nécessaire */
+}
+
+.card {
+    flex: 1;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 1rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+    overflow: hidden; /* Assure que le contenu reste dans la carte */
+
+}
+
+.card h3 {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    font-size: 1.25rem;
+    color: #333;
+}
+
+.card table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.card table th,
+.card table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+.card table th {
+    background-color: #f5f5f5;
+    font-weight: bold;
+}
+
+.card-container {
+    display: flex;
+    gap: 1rem;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.card .table-container {
+    max-height: 300px; /* Ajustez la hauteur maximale si nécessaire */
+    overflow: auto; /* Ajoute un défilement si le contenu dépasse */
+}
+
+.no-data {
+    color: #999;
+    font-style: italic;
+}
+</style>
+
+<h3 class="text-center my-4">Bonds Pricing Calculator</h3>
+
+<form>
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <label for="FV">Valeur nominale (FV) :</label>
+            <input type="number" id="FV" class="form-control" @bind="FV" />
+        </div>
+        <div class="form-group col-md-6">
+            <label for="rate">Taux d'intérêt (%) :</label>
+            <input type="number" id="rate" class="form-control" @bind="rate" />
+        </div>
+        <div class="form-group col-md-6">
+            <label for="Yield">Yield to Maturity (%) :</label>
+            <input type="number" id="Yield" class="form-control" @bind="Yield" />
+        </div>
+        <div class="form-group col-md-6">
+            <label for="Maturity">Échéance (années) :</label>
+            <input type="number" id="Maturity" class="form-control" @bind="Maturity" />
+        </div>
+        <div class="text-center">
+            <button type="button" class="btn btn-primary mt-3" @onclick="OnCombinedClick">Calculate</button>
+        </div>
+
+        <!-- Carte d'Audit -->
+        <div class="card">
+            <h3>Results</h3>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Price</th>
+                        <th>Macauley Duration</th>
+                        <th>Modified Duration</th>
+                        <th>Convexity</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>@GetPrice()</td>
+                        <td>@GetmacDuration()</td>
+                        <td>@GetModifiedDuration()</td>
+                        <td>@GetConvexity()</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <!-- Conteneur pour le graphique -->
+    <div class="chart-container">
+        <div class="chart-item">
+            <canvas id="testchart"></canvas>
+        </div>
+    </div>
+
+    <div class="table table-striped">
+        <h4>Résultats :</h4>
+        <table class="table table-bordered table-striped mt-3">
+            <thead>
+                <tr>
+                    <th>Period</th>
+                    <th>Flux</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (int i = 0; i < GetLabels().Count; i++)
+                {
+                        <tr>
+                            <td><strong>@GetLabels()[i]</strong></td>
+                            <td><strong>@GetData()[i]</strong></td>
+                        </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</form>
+
+
+
+
+@code {
+    private async Task OnCombinedClick()
+    {
+        // Appeler UpdateResult
+        UpdateResult();
+
+        // Appeler GenerateBars via JsRuntime
+        await JsRuntime.InvokeVoidAsync("GenerateBars", GetData(), GetLabels());
+
+    }
+
+}
+
+
