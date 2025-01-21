@@ -1,0 +1,143 @@
+﻿@page "/DataMarket"
+@using Newtonsoft.Json
+@inject DatabaseService DatabaseService
+@inject IJSRuntime JSRuntime
+
+<h3 class="text-center my-4 text-primary">Data Market</h3>
+
+<div class="container">
+    <!-- Formulaire de recherche -->
+    <div class="row mb-4">
+        <!-- Input Code -->
+        <div class="col-md-3">
+            <label for="SearchTerm" class="form-label">Input Code:</label>
+            <input id="SearchTerm" class="form-control" @bind="SearchTerm" placeholder="Entrez un code..." />
+        </div>
+
+        <!-- Start Date -->
+        <div class="col-md-3">
+            <label for="SearchStartDate" class="form-label">Start Date:</label>
+            <input id="SearchStartDate" type="date" class="form-control" @bind="SearchStartDate" />
+        </div>
+
+        <!-- End Date -->
+        <div class="col-md-3">
+            <label for="SearchEndDate" class="form-label">End Date:</label>
+            <input id="SearchEndDate" type="date" class="form-control" @bind="SearchEndDate" />
+        </div>
+
+        <!-- Product Type -->
+        <div class="col-md-3">
+            <label for="SelectedTable" class="form-label">Product Type:</label>
+            <select id="SelectedTable" @bind="SelectedTable" class="form-select">
+                <option value="dataMarketRate">Rate</option>
+                <option value="dataMarketCcy">Forex</option>
+            </select>
+        </div>
+    </div>
+
+    <!-- Bouton rechercher -->
+    <div class="row mb-4">
+        <div class="col-md-12 text-center">
+            <button @onclick="SearchData" class="btn btn-primary px-4">Rechercher</button>
+        </div>
+    </div>
+
+    <!-- Tableau et Graphique -->
+    <div class="row">
+        <!-- Tableau des données -->
+        <div class="col-md-7">
+            <table id="dataTableRate" class="table table-bordered table-striped">
+                <thead class="table-dark">
+                    <!-- Les en-têtes de colonnes seront ajoutés dynamiquement -->
+                </thead>
+                <tbody>
+                    <!-- Les lignes seront ajoutées dynamiquement -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Card pour le graphique -->
+        <div class="col-md-5">
+            <div class="card shadow-lg">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="card-title mb-0">Graphique</h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="RateChart" style="width: 100%; height: 400px;"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modale native avec <dialog> -->
+<dialog id="dataModal" style="border: 1px solid black; padding: 1em; border-radius: 10px;">
+    <h5>Détails de la ligne</h5>
+    <p id="modalContent">Les détails de la ligne apparaîtront ici.</p>
+    <button id="closeModalButton" class="btn btn-secondary mt-2">Fermer</button>
+</dialog>
+
+
+@code {
+
+
+    private string SearchTerm = string.Empty;
+    private DateTime SearchStartDate = DateTime.Today.AddYears(-1);
+    private DateTime SearchEndDate = DateTime.Today;
+    private string SelectedTable = "dataMarketRate";
+
+
+    private string json = string.Empty;
+    private List<Dictionary<string, object>> request_all = new();
+
+    private async Task SearchData()
+    {
+        try
+        {
+            // Vérifie que la table sélectionnée est autorisée pour éviter des injections SQL
+            if (SelectedTable != "dataMarketRate" && SelectedTable != "dataMarketCcy")
+            {
+                throw new Exception("Table invalide sélectionnée.");
+            }
+            string query_all = $"SELECT Date, Price FROM {SelectedTable} WHERE [Code] = @Input AND Date BETWEEN @StartDate AND @EndDate";
+
+            var parameters = new Dictionary<string, object>
+            {
+                { "@Input", SearchTerm },
+                {"@StartDate", SearchStartDate },
+                {"@EndDate", SearchEndDate },
+
+            };
+
+            request_all = DatabaseService.GetData(query_all, parameters);
+
+            json = request_all.Any() ? JsonConvert.SerializeObject(request_all) : null;
+
+            await JSRuntime.InvokeVoidAsync("resetDataRate");
+
+            if (!string.IsNullOrEmpty(json))
+            {
+                await JSRuntime.InvokeVoidAsync("initializeDataRate", json);
+
+                // Préparer les données à envoyer au graphique
+                var chartData = request_all.Select(r => new
+                {
+                    Date = r.ContainsKey("Date") ? r["Date"].ToString() : "",
+                    Price = r.ContainsKey("Price") ? Convert.ToDecimal(r["Price"]) : 0
+                }).ToList();
+
+                // Extraire les labels (dates) et les valeurs (prix)
+                var labels = chartData.Select(d => d.Date).ToArray();
+                var data = chartData.Select(d => d.Price).ToArray();
+
+                // Appeler la fonction JavaScript pour générer le graphique
+                await JSRuntime.InvokeVoidAsync("GenerateLineRate", data, labels);
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Erreur lors de la récupération des données : {ex.Message}");
+        }
+    }
+}
