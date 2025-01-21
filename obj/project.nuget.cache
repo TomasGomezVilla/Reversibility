@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "9eEdmWeF+0f8BmByBt9Q7myJU+h8QGx9S0ovWdohFeT9t40j8pu7KFNqezwk0Wd6ZOA+ZcOZAHkW2ZOHpHpQmA==",
+  "dgSpecHash": "josL1BeJJAZfK0V4EwqqOf7rzIlN6IOpDR6ItDUq6T7zrdBL8mU0pUiwUWY4nBXmpgq3e1YmjaDXWgWl7fwexA==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Thibaut Joncour\\source\\repos\\MagicNumber\\MagicNumber.csproj",
+  "projectFilePath": "C:\\Users\\Thibaut Joncour\\Source\\Repos\\BNP_App\\MagicNumber.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Thibaut Joncour\\.nuget\\packages\\blazor.bootstrap\\3.2.0\\blazor.bootstrap.3.2.0.nupkg.sha512",
     "C:\\Users\\Thibaut Joncour\\.nuget\\packages\\entityframework\\6.4.4\\entityframework.6.4.4.nupkg.sha512",

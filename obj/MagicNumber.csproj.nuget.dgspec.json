@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Thibaut Joncour\\source\\repos\\MagicNumber\\MagicNumber.csproj": {}
+    "C:\\Users\\Thibaut Joncour\\Source\\Repos\\BNP_App\\MagicNumber.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Thibaut Joncour\\source\\repos\\MagicNumber\\MagicNumber.csproj": {
+    "C:\\Users\\Thibaut Joncour\\Source\\Repos\\BNP_App\\MagicNumber.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Thibaut Joncour\\source\\repos\\MagicNumber\\MagicNumber.csproj",
+        "projectUniqueName": "C:\\Users\\Thibaut Joncour\\Source\\Repos\\BNP_App\\MagicNumber.csproj",
         "projectName": "MagicNumber",
-        "projectPath": "C:\\Users\\Thibaut Joncour\\source\\repos\\MagicNumber\\MagicNumber.csproj",
+        "projectPath": "C:\\Users\\Thibaut Joncour\\Source\\Repos\\BNP_App\\MagicNumber.csproj",
         "packagesPath": "C:\\Users\\Thibaut Joncour\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Thibaut Joncour\\source\\repos\\MagicNumber\\obj\\",
+        "outputPath": "C:\\Users\\Thibaut Joncour\\Source\\Repos\\BNP_App\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

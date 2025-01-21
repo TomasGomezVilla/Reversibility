@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "tagvqbKmlR1VK2k/tw+kltcQZx2ZaoWr4dE7nNUn1pk=",
+  "Hash": "FiuW6SqCqGYvBXORFQHsr+Ghqg0tzgRVuOJZsus45p8=",
   "Source": "MagicNumber",
   "BasePath": "_content/MagicNumber",
   "Mode": "Default",
@@ -10,7 +10,7 @@
     {
       "Name": "MagicNumber\\wwwroot",
       "Source": "MagicNumber",
-      "ContentRoot": "C:\\Users\\Thibaut Joncour\\source\\repos\\MagicNumber\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\Thibaut Joncour\\Source\\Repos\\BNP_App\\wwwroot\\",
       "BasePath": "_content/MagicNumber",
       "Pattern": "**"
     }
@@ -207,10 +207,10 @@
       "OriginalItemSpec": "C:\\Users\\Thibaut Joncour\\.nuget\\packages\\blazor.bootstrap\\3.2.0\\staticwebassets\\pdfjs-4.0.379.worker.min.js"
     },
     {
-      "Identity": "C:\\Users\\Thibaut Joncour\\source\\repos\\MagicNumber\\obj\\Debug\\net7.0\\scopedcss\\bundle\\MagicNumber.styles.css",
+      "Identity": "C:\\Users\\Thibaut Joncour\\Source\\Repos\\BNP_App\\obj\\Debug\\net7.0\\scopedcss\\bundle\\MagicNumber.styles.css",
       "SourceId": "MagicNumber",
       "SourceType": "Computed",
-      "ContentRoot": "C:\\Users\\Thibaut Joncour\\source\\repos\\MagicNumber\\obj\\Debug\\net7.0\\scopedcss\\bundle\\",
+      "ContentRoot": "C:\\Users\\Thibaut Joncour\\Source\\Repos\\BNP_App\\obj\\Debug\\net7.0\\scopedcss\\bundle\\",
       "BasePath": "_content/MagicNumber",
       "RelativePath": "MagicNumber.styles.css",
       "AssetKind": "All",
@@ -223,13 +223,13 @@
       "AssetTraitValue": "ApplicationBundle",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "C:\\Users\\Thibaut Joncour\\source\\repos\\MagicNumber\\obj\\Debug\\net7.0\\scopedcss\\bundle\\MagicNumber.styles.css"
+      "OriginalItemSpec": "C:\\Users\\Thibaut Joncour\\Source\\Repos\\BNP_App\\obj\\Debug\\net7.0\\scopedcss\\bundle\\MagicNumber.styles.css"
     },
     {
-      "Identity": "C:\\Users\\Thibaut Joncour\\source\\repos\\MagicNumber\\obj\\Debug\\net7.0\\scopedcss\\projectbundle\\MagicNumber.bundle.scp.css",
+      "Identity": "C:\\Users\\Thibaut Joncour\\Source\\Repos\\BNP_App\\obj\\Debug\\net7.0\\scopedcss\\projectbundle\\MagicNumber.bundle.scp.css",
       "SourceId": "MagicNumber",
       "SourceType": "Computed",
-      "ContentRoot": "C:\\Users\\Thibaut Joncour\\source\\repos\\MagicNumber\\obj\\Debug\\net7.0\\scopedcss\\projectbundle\\",
+      "ContentRoot": "C:\\Users\\Thibaut Joncour\\Source\\Repos\\BNP_App\\obj\\Debug\\net7.0\\scopedcss\\projectbundle\\",
       "BasePath": "_content/MagicNumber",
       "RelativePath": "MagicNumber.bundle.scp.css",
       "AssetKind": "All",
@@ -242,13 +242,13 @@
       "AssetTraitValue": "ProjectBundle",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "C:\\Users\\Thibaut Joncour\\source\\repos\\MagicNumber\\obj\\Debug\\net7.0\\scopedcss\\projectbundle\\MagicNumber.bundle.scp.css"
+      "OriginalItemSpec": "C:\\Users\\Thibaut Joncour\\Source\\Repos\\BNP_App\\obj\\Debug\\net7.0\\scopedcss\\projectbundle\\MagicNumber.bundle.scp.css"
     },
     {
-      "Identity": "C:\\Users\\Thibaut Joncour\\source\\repos\\MagicNumber\\wwwroot\\css\\bootstrap\\bootstrap.min.css",
+      "Identity": "C:\\Users\\Thibaut Joncour\\Source\\Repos\\BNP_App\\wwwroot\\css\\bootstrap\\bootstrap.min.css",
       "SourceId": "MagicNumber",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\Thibaut Joncour\\source\\repos\\MagicNumber\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\Thibaut Joncour\\Source\\Repos\\BNP_App\\wwwroot\\",
       "BasePath": "_content/MagicNumber",
       "RelativePath": "css/bootstrap/bootstrap.min.css",
       "AssetKind": "All",
@@ -264,10 +264,10 @@
       "OriginalItemSpec": "wwwroot\\css\\bootstrap\\bootstrap.min.css"
     },
     {
-      "Identity": "C:\\Users\\Thibaut Joncour\\source\\repos\\MagicNumber\\wwwroot\\css\\bootstrap\\bootstrap.min.css.map",
+      "Identity": "C:\\Users\\Thibaut Joncour\\Source\\Repos\\BNP_App\\wwwroot\\css\\bootstrap\\bootstrap.min.css.map",
       "SourceId": "MagicNumber",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\Thibaut Joncour\\source\\repos\\MagicNumber\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\Thibaut Joncour\\Source\\Repos\\BNP_App\\wwwroot\\",
       "BasePath": "_content/MagicNumber",
       "RelativePath": "css/bootstrap/bootstrap.min.css.map",
       "AssetKind": "All",
@@ -283,10 +283,10 @@
       "OriginalItemSpec": "wwwroot\\css\\bootstrap\\bootstrap.min.css.map"
     },
     {
-      "Identity": "C:\\Users\\Thibaut Joncour\\source\\repos\\MagicNumber\\wwwroot\\css\\open-iconic\\font\\css\\open-iconic-bootstrap.min.css",
+      "Identity": "C:\\Users\\Thibaut Joncour\\Source\\Repos\\BNP_App\\wwwroot\\css\\open-iconic\\font\\css\\open-iconic-bootstrap.min.css",
       "SourceId": "MagicNumber",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\Thibaut Joncour\\source\\repos\\MagicNumber\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\Thibaut Joncour\\Source\\Repos\\BNP_App\\wwwroot\\",
       "BasePath": "_content/MagicNumber",
       "RelativePath": "css/open-iconic/font/css/open-iconic-bootstrap.min.css",
       "AssetKind": "All",
@@ -302,10 +302,10 @@
       "OriginalItemSpec": "wwwroot\\css\\open-iconic\\font\\css\\open-iconic-bootstrap.min.css"
     },
     {
-      "Identity": "C:\\Users\\Thibaut Joncour\\source\\repos\\MagicNumber\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.eot",
+      "Identity": "C:\\Users\\Thibaut Joncour\\Source\\Repos\\BNP_App\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.eot",
       "SourceId": "MagicNumber",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\Thibaut Joncour\\source\\repos\\MagicNumber\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\Thibaut Joncour\\Source\\Repos\\BNP_App\\wwwroot\\",
       "BasePath": "_content/MagicNumber",
       "RelativePath": "css/open-iconic/font/fonts/open-iconic.eot",
       "AssetKind": "All",
@@ -321,10 +321,10 @@
       "OriginalItemSpec": "wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.eot"
     },
     {
-      "Identity": "C:\\Users\\Thibaut Joncour\\source\\repos\\MagicNumber\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.otf",
+      "Identity": "C:\\Users\\Thibaut Joncour\\Source\\Repos\\BNP_App\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.otf",
       "SourceId": "MagicNumber",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\Thibaut Joncour\\source\\repos\\MagicNumber\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\Thibaut Joncour\\Source\\Repos\\BNP_App\\wwwroot\\",
       "BasePath": "_content/MagicNumber",
       "RelativePath": "css/open-iconic/font/fonts/open-iconic.otf",
       "AssetKind": "All",
@@ -340,10 +340,10 @@
       "OriginalItemSpec": "wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.otf"
     },
     {
-      "Identity": "C:\\Users\\Thibaut Joncour\\source\\repos\\MagicNumber\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.svg",
+      "Identity": "C:\\Users\\Thibaut Joncour\\Source\\Repos\\BNP_App\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.svg",
       "SourceId": "MagicNumber",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\Thibaut Joncour\\source\\repos\\MagicNumber\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\Thibaut Joncour\\Source\\Repos\\BNP_App\\wwwroot\\",
       "BasePath": "_content/MagicNumber",
       "RelativePath": "css/open-iconic/font/fonts/open-iconic.svg",
       "AssetKind": "All",
@@ -359,10 +359,10 @@
       "OriginalItemSpec": "wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.svg"
     },
     {
-      "Identity": "C:\\Users\\Thibaut Joncour\\source\\repos\\MagicNumber\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.ttf",
+      "Identity": "C:\\Users\\Thibaut Joncour\\Source\\Repos\\BNP_App\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.ttf",
       "SourceId": "MagicNumber",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\Thibaut Joncour\\source\\repos\\MagicNumber\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\Thibaut Joncour\\Source\\Repos\\BNP_App\\wwwroot\\",
       "BasePath": "_content/MagicNumber",
       "RelativePath": "css/open-iconic/font/fonts/open-iconic.ttf",
       "AssetKind": "All",
@@ -378,10 +378,10 @@
       "OriginalItemSpec": "wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.ttf"
     },
     {
-      "Identity": "C:\\Users\\Thibaut Joncour\\source\\repos\\MagicNumber\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.woff",
+      "Identity": "C:\\Users\\Thibaut Joncour\\Source\\Repos\\BNP_App\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.woff",
       "SourceId": "MagicNumber",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\Thibaut Joncour\\source\\repos\\MagicNumber\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\Thibaut Joncour\\Source\\Repos\\BNP_App\\wwwroot\\",
       "BasePath": "_content/MagicNumber",
       "RelativePath": "css/open-iconic/font/fonts/open-iconic.woff",
       "AssetKind": "All",
@@ -397,10 +397,10 @@
       "OriginalItemSpec": "wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.woff"
     },
     {
-      "Identity": "C:\\Users\\Thibaut Joncour\\source\\repos\\MagicNumber\\wwwroot\\css\\open-iconic\\FONT-LICENSE",
+      "Identity": "C:\\Users\\Thibaut Joncour\\Source\\Repos\\BNP_App\\wwwroot\\css\\open-iconic\\FONT-LICENSE",
       "SourceId": "MagicNumber",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\Thibaut Joncour\\source\\repos\\MagicNumber\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\Thibaut Joncour\\Source\\Repos\\BNP_App\\wwwroot\\",
       "BasePath": "_content/MagicNumber",
       "RelativePath": "css/open-iconic/FONT-LICENSE",
       "AssetKind": "All",
@@ -416,10 +416,10 @@
       "OriginalItemSpec": "wwwroot\\css\\open-iconic\\FONT-LICENSE"
     },
     {
-      "Identity": "C:\\Users\\Thibaut Joncour\\source\\repos\\MagicNumber\\wwwroot\\css\\open-iconic\\ICON-LICENSE",
+      "Identity": "C:\\Users\\Thibaut Joncour\\Source\\Repos\\BNP_App\\wwwroot\\css\\open-iconic\\ICON-LICENSE",
       "SourceId": "MagicNumber",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\Thibaut Joncour\\source\\repos\\MagicNumber\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\Thibaut Joncour\\Source\\Repos\\BNP_App\\wwwroot\\",
       "BasePath": "_content/MagicNumber",
       "RelativePath": "css/open-iconic/ICON-LICENSE",
       "AssetKind": "All",
@@ -435,10 +435,10 @@
       "OriginalItemSpec": "wwwroot\\css\\open-iconic\\ICON-LICENSE"
     },
     {
-      "Identity": "C:\\Users\\Thibaut Joncour\\source\\repos\\MagicNumber\\wwwroot\\css\\open-iconic\\README.md",
+      "Identity": "C:\\Users\\Thibaut Joncour\\Source\\Repos\\BNP_App\\wwwroot\\css\\open-iconic\\README.md",
       "SourceId": "MagicNumber",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\Thibaut Joncour\\source\\repos\\MagicNumber\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\Thibaut Joncour\\Source\\Repos\\BNP_App\\wwwroot\\",
       "BasePath": "_content/MagicNumber",
       "RelativePath": "css/open-iconic/README.md",
       "AssetKind": "All",
@@ -454,10 +454,10 @@
       "OriginalItemSpec": "wwwroot\\css\\open-iconic\\README.md"
     },
     {
-      "Identity": "C:\\Users\\Thibaut Joncour\\source\\repos\\MagicNumber\\wwwroot\\css\\site.css",
+      "Identity": "C:\\Users\\Thibaut Joncour\\Source\\Repos\\BNP_App\\wwwroot\\css\\site.css",
       "SourceId": "MagicNumber",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\Thibaut Joncour\\source\\repos\\MagicNumber\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\Thibaut Joncour\\Source\\Repos\\BNP_App\\wwwroot\\",
       "BasePath": "_content/MagicNumber",
       "RelativePath": "css/site.css",
       "AssetKind": "All",
@@ -473,10 +473,10 @@
       "OriginalItemSpec": "wwwroot\\css\\site.css"
     },
     {
-      "Identity": "C:\\Users\\Thibaut Joncour\\source\\repos\\MagicNumber\\wwwroot\\db.sqlite3",
+      "Identity": "C:\\Users\\Thibaut Joncour\\Source\\Repos\\BNP_App\\wwwroot\\db.sqlite3",
       "SourceId": "MagicNumber",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\Thibaut Joncour\\source\\repos\\MagicNumber\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\Thibaut Joncour\\Source\\Repos\\BNP_App\\wwwroot\\",
       "BasePath": "_content/MagicNumber",
       "RelativePath": "db.sqlite3",
       "AssetKind": "All",
@@ -492,10 +492,10 @@
       "OriginalItemSpec": "wwwroot\\db.sqlite3"
     },
     {
-      "Identity": "C:\\Users\\Thibaut Joncour\\source\\repos\\MagicNumber\\wwwroot\\favicon.png",
+      "Identity": "C:\\Users\\Thibaut Joncour\\Source\\Repos\\BNP_App\\wwwroot\\favicon.png",
       "SourceId": "MagicNumber",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\Thibaut Joncour\\source\\repos\\MagicNumber\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\Thibaut Joncour\\Source\\Repos\\BNP_App\\wwwroot\\",
       "BasePath": "_content/MagicNumber",
       "RelativePath": "favicon.png",
       "AssetKind": "All",
@@ -511,10 +511,10 @@
       "OriginalItemSpec": "wwwroot\\favicon.png"
     },
     {
-      "Identity": "C:\\Users\\Thibaut Joncour\\source\\repos\\MagicNumber\\wwwroot\\index.html",
+      "Identity": "C:\\Users\\Thibaut Joncour\\Source\\Repos\\BNP_App\\wwwroot\\index.html",
       "SourceId": "MagicNumber",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\Thibaut Joncour\\source\\repos\\MagicNumber\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\Thibaut Joncour\\Source\\Repos\\BNP_App\\wwwroot\\",
       "BasePath": "_content/MagicNumber",
       "RelativePath": "index.html",
       "AssetKind": "All",
@@ -530,10 +530,10 @@
       "OriginalItemSpec": "wwwroot\\index.html"
     },
     {
-      "Identity": "C:\\Users\\Thibaut Joncour\\source\\repos\\MagicNumber\\wwwroot\\js\\interop.js",
+      "Identity": "C:\\Users\\Thibaut Joncour\\Source\\Repos\\BNP_App\\wwwroot\\js\\interop.js",
       "SourceId": "MagicNumber",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\Thibaut Joncour\\source\\repos\\MagicNumber\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\Thibaut Joncour\\Source\\Repos\\BNP_App\\wwwroot\\",
       "BasePath": "_content/MagicNumber",
       "RelativePath": "js/interop.js",
       "AssetKind": "All",
