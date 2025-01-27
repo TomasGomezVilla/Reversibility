@@ -198,10 +198,10 @@ function resetDataTable1() {
 }
 
 function resetDataTable() {
-    if ($.fn.dataTable.isDataTable('#dataTable')) {
-        $('#dataTable').DataTable().clear().destroy();
+    if ($.fn.dataTable.isDataTable('#dataTableRate')) {
+        $('#dataTableRate').DataTable().clear().destroy();
     }
-    $('#dataTable').empty();
+    $('#dataTableRate').empty();
 }
 
 
@@ -296,11 +296,11 @@ function GenerateLineRate(data, labels) {
 
     // Créer un nouveau graphique
     chartInstance = new Chart(ctx, {
-        type: 'Line',
+        type: 'line',
         data: {
             labels: labels,
             datasets: [{
-                label: 'Duration',
+                label: 'Market Data',
                 data: data,
                 backgroundColor: 'rgba(75, 192, 192, 0.2)',
                 borderColor: 'rgba(75, 192, 192, 1)',
@@ -317,4 +317,3 @@ function GenerateLineRate(data, labels) {
         }
     });
 }
-
