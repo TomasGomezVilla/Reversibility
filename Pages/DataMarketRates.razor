@@ -1,0 +1,264 @@
+﻿@page "/DataMarketRates"
+@using Newtonsoft.Json
+@inject DatabaseService DatabaseService
+@inject IJSRuntime JSRuntime
+
+<style>
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+    }
+
+    .modal-content {
+        background-color: white;
+        margin: 10% auto;
+        padding: 20px;
+        width: 50%;
+        box-shadow: 0px 0px 10px 2px rgba(0,0,0,0.2);
+        border-radius: 10px;
+    }
+
+    .close {
+        color: red;
+        float: right;
+        font-size: 28px;
+        cursor: pointer;
+    }
+
+    .rate-list {
+        max-height: 300px;
+        overflow-y: auto;
+        border: 1px solid #ddd;
+        padding: 10px;
+    }
+
+    .rate-item.selected {
+        background-color: #007bff;
+        color: white;
+        font-weight: bold;
+    }
+
+    .rate-item {
+        transition: background-color 0.3s ease;
+        padding: 8px;
+        cursor: pointer;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .rate-item:hover {
+        background-color: #f0f0f0;
+    }
+</style>
+
+<h3 class="text-center my-4 text-primary">Data Market</h3>
+
+<div class="container">
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <label for="SearchTerm" class="form-label">Input Code:</label>
+            <div class="input-group">
+                <input id="SearchTerm" class="form-control" value="@string.Join(", ", SelectedCurrencies)" readonly />
+                <button class="btn btn-secondary" @onclick="OpenRateModal">🔍</button>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <label for="SearchStartDate" class="form-label">Start Date:</label>
+            <input id="SearchStartDate" type="date" class="form-control" @bind="SearchStartDate" />
+        </div>
+
+        <div class="col-md-3">
+            <label for="SearchEndDate" class="form-label">End Date:</label>
+            <input id="SearchEndDate" type="date" class="form-control" @bind="SearchEndDate" />
+        </div>
+
+        <div class="col-md-3">
+            <label for="SelectedTable" class="form-label">Product Type:</label>
+            <select id="SelectedTable" @bind="SelectedTable" class="form-select">
+                <option value="dataMarketCcy">Forex</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-md-12 text-center">
+            <button @onclick="SearchData" class="btn btn-primary px-4">Rechercher</button>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-7">
+            <table id="dataTableRate" class="table table-bordered table-striped">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Date</th>
+                        <th>Price</th>
+                        <th>Currency</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var row in request_all)
+                    {
+                                <tr>
+                                    <td>@row["Date"]</td>
+                                    <td>@row["Price"]</td>
+                                    <td>@row["Code"]</td>
+                                </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <div class="col-md-5">
+            <div class="card shadow-lg">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="card-title mb-0">Graphique</h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="RateChart" style="width: 100%; height: 400px;"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal for Rate Selection -->
+<div class="modal" style="@(IsRateModalOpen ? "display:block;" : "display:none;")">
+    <div class="modal-content">
+        <span class="close" @onclick="CloseRateModal">&times;</span>
+        <h4>Select a Rate Type</h4>
+
+        <input type="text" @bind="SearchTermRate" placeholder="Search rate..." class="form-control mb-2" />
+
+        <div class="rate-list">
+            @foreach (var rate in FilteredRates)
+            {
+                        <div class="rate-item @(SelectedCurrencies.Contains(rate) ? "selected" : "")"
+                             @onclick="() => SelectRate(rate)">
+                    @rate
+                        </div>
+            }
+        </div>
+
+        <button class="btn btn-success mt-2" @onclick="CloseRateModal">Confirm</button>
+    </div>
+</div>
+
+@code {
+    private DateTime SearchStartDate = DateTime.Today.AddYears(-4);
+    private DateTime SearchEndDate = DateTime.Today.AddYears(-2);
+    private string SelectedTable = "dataMarketRates";
+    private List<Dictionary<string, object>> request_all = new();
+    private List<string> SelectedCurrencies = new();
+    private bool IsRateModalOpen = false;
+    private string SearchTermRate = "";
+
+    private List<string> RateTypes = new List<string>
+    {
+"iESTER",
+"TEC 10",
+"Lib12M GBP J",
+"Lib12M USD",
+"Euribor12M",
+"Euribor6M",
+"iSoniaGBP",
+"Lib2M GBP",
+"Lib3M GBP",
+"Lib6M GBP",
+"iLIB3A",
+"iSwapSONIA4M",
+"iSwapSONIA5M",
+"iSTOXX",
+"iIMEUREX",
+"Euribor 1W",
+"Euribor2W",
+"Euribor2M",
+"Euribor3M",
+"iFRA6MVS3M",
+
+
+    };
+    private List<string> FilteredRates => RateTypes
+        .Where(rate => rate.Contains(SearchTermRate, StringComparison.OrdinalIgnoreCase))
+        .ToList();
+
+    private void OpenRateModal() => IsRateModalOpen = true;
+    private void CloseRateModal() => IsRateModalOpen = false;
+
+    private void SelectRate(string rate)
+    {
+        if (SelectedCurrencies.Contains(rate))
+        {
+            SelectedCurrencies.Remove(rate);
+        }
+        else
+        {
+            SelectedCurrencies.Add(rate);
+        }
+    }
+
+    private async Task SearchData()
+    {
+        if (SelectedCurrencies.Count == 0)
+        {
+            Console.WriteLine("Aucune devise sélectionnée.");
+            return;
+        }
+
+        string query_all = $"SELECT Date, Price, Code FROM dataMarketRate WHERE [Code] IN ({string.Join(",", SelectedCurrencies.Select((c, i) => $"@Code{i}"))}) AND Date BETWEEN @StartDate AND @EndDate";
+
+        var parameters = new Dictionary<string, object>
+        {
+            { "@StartDate", SearchStartDate },
+            { "@EndDate", SearchEndDate }
+        };
+
+        for (int i = 0; i < SelectedCurrencies.Count; i++)
+        {
+            parameters[$"@Code{i}"] = SelectedCurrencies[i];
+        }
+
+        request_all = DatabaseService.GetData(query_all, parameters);
+        if (request_all.Any())
+        {
+            // Étape 1: Récupérer **toutes** les dates uniques et les trier
+            var allDates = request_all.Select(r => r["Date"].ToString()).Distinct().OrderBy(d => d).ToList();
+
+            // Étape 2: Grouper les données par devise
+            var groupedData = request_all
+                .GroupBy(r => r["Code"].ToString()) // Groupement par devise
+                .ToDictionary(
+                    g => g.Key, // Clé = devise
+                    g => g.Select(d => new
+                    {
+                        Date = d["Date"].ToString(),
+                        Price = Convert.ToDecimal(d["Price"])
+                    }).ToList()
+                );
+
+            // Étape 3: Construire un dictionnaire de prix aligné sur `allDates`
+            var structuredData = new Dictionary<string, List<decimal>>();
+
+            foreach (var ccy in groupedData.Keys)
+            {
+                // Créer un mapping Date->Price pour combler les valeurs manquantes
+                var priceMap = groupedData[ccy].ToDictionary(d => d.Date, d => d.Price);
+
+                // Construire la série de prix dans le même ordre que `allDates`
+                var priceList = allDates.Select(date => priceMap.ContainsKey(date) ? priceMap[date] : 0m).ToList();
+
+                structuredData[ccy] = priceList;
+            }
+
+            // Étape 4: Envoyer les données à Chart.js
+            await JSRuntime.InvokeVoidAsync("GenerateLineRate", structuredData, allDates);
+        }
+
+    }
+}

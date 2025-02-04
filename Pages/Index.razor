@@ -1,0 +1,89 @@
+﻿@page "/"
+
+<style>
+    /* Fullscreen Background */
+    .home-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background-color: #2D2926;
+        color: white;
+        text-align: center;
+    }
+
+    /* Logo Styling */
+    .logo-container {
+        display: flex;
+        justify-content: center;
+        gap: 50px;
+        margin-top: 20px;
+    }
+
+    .logo {
+        width: 200px; /* Adjust as needed */
+        height: auto;
+        transition: transform 0.3s ease;
+    }
+
+    .logo:hover {
+        transform: scale(1.1);
+    }
+
+    /* Button Styling */
+    .btn-finance {
+        margin-top: 30px;
+        padding: 12px 24px;
+        background-color: #FFC107;
+        color: #2D2926;
+        font-size: 18px;
+        font-weight: bold;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background 0.3s ease;
+    }
+
+    .btn-finance:hover {
+        background-color: #FFA000;
+    }
+</style>
+
+<!-- Home Page Container -->
+<div class="home-container">
+    <h1>Welcome to Reversibility App</h1>
+
+<p>ALMT Trading Desk (Rate Hedging, Fixed Income Lifecycle, Derivatives Pricing)</p>    <p>Analyze and manage your financial data efficiently</p>
+
+    <!-- Logo Section -->
+<div class="logo-slider">
+    <div class="logo-track">
+        <img src="images/logo_bnp.png" alt="Logo BNP" class="logo">
+        <img src="images/logo_black.jpg" alt="Logo 2" class="logo">
+
+        <!-- Doublons pour l'effet infini -->
+        <img src="images/logo_bnp.png" alt="Logo BNP" class="logo">
+        <img src="images/logo_black.jpg" alt="Logo Levanti" class="logo">
+
+                <!-- Doublons pour l'effet infini -->
+        <img src="images/logo_bnp.png" alt="Logo BNP" class="logo">
+        <img src="images/logo_black.jpg" alt="Logo Levanti" class="logo">
+
+                <!-- Doublons pour l'effet infini -->
+
+    </div>
+</div>
+
+    <!-- Navigate to Market Data -->
+    <button class="btn-finance" @onclick="GoToMarketData">Explore Market Data</button>
+</div>
+
+@code {
+    [Inject] NavigationManager Navigation { get; set; }
+
+    private void GoToMarketData()
+    {
+        Navigation.NavigateTo("/DataMarketRates"); // Change to desired page
+    }
+}
