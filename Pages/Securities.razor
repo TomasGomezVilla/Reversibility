@@ -1,4 +1,4 @@
-﻿@page "/singletrade"
+﻿@page "/securitization"
 @using Newtonsoft.Json
 @inject DatabaseService DatabaseService
 @inject IJSRuntime JSRuntime
@@ -100,22 +100,25 @@
     }
 </style>
 
+<h3 class="text-center my-4 text-primary">Securities</h3>
+
+
 <div class="container">
     <div class="search-container">
-        <input @bind="SearchTerm" placeholder="Entrez un N° d'historique..." />
-        <button @onclick="ApplyFilter">Rechercher</button>
+        <input @bind="SearchTerm" placeholder="Enter ISIN code..." />
+        <button @onclick="ApplyFilter">Search</button>
     </div>
 
     <div class="card-container">
         <div class="card">
-            <h3>Trades Characteristics</h3>
+            <h3>Bonds Characteristics</h3>
             @if (FilteredData.Any())
             {
                     <table>
                         <thead>
                             <tr>
                                 <th>Libellé</th>
-                                <th>Valeur</th>
+                                <th>Values</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -136,21 +139,12 @@
         </div>
 
         <div class="card">
-            <h3>Audit</h3>
+            <h3>Flux</h3>
             <div class="table-container">
-                <table id="dataTable" class="table table-striped">
+                <table id="dataTable1" class="table table-striped">
                     <!-- Contenu généré dynamiquement -->
                 </table>
             </div>
-        </div>
-    </div>
-
-    <div class="card">
-        <h3>Flux</h3>
-        <div class="table-container">
-            <table id="dataTable1" class="table table-striped">
-                <!-- Contenu généré dynamiquement -->
-            </table>
         </div>
     </div>
 </div>
@@ -159,22 +153,19 @@
     private string SearchTerm = string.Empty;
     private string jsonaudit, jsonEch = string.Empty;
     private List<Dictionary<string, object>> FilteredData = new();
-    private List<Dictionary<string, object>> FilteredAudit = new();
     private List<Dictionary<string, object>> FilteredEche = new();
 
     private async Task ApplyFilter()
     {
-        string query = "SELECT * FROM trades WHERE [ARPSONRef] = @Input";
-        string query2 = "SELECT * FROM audit WHERE [ARPSONRef] = @Input";
-        string query3 = "SELECT * FROM schedules WHERE [ARPSONRef] = @Input";
+        string query = "SELECT * FROM securities WHERE [ISIN] = @Input";
+        string query2 = "SELECT * FROM securitiesSchedule WHERE [ISIN] = @Input";
         var parameters = new Dictionary<string, object> { { "@Input", SearchTerm } };
 
         FilteredData = DatabaseService.GetData(query, parameters);
-        FilteredAudit = DatabaseService.GetData(query2, parameters);
-        FilteredEche = DatabaseService.GetData(query3, parameters);
+        FilteredEche = DatabaseService.GetData(query2, parameters);
 
-        jsonEch = FilteredEche.Any() ? JsonConvert.SerializeObject(FilteredEche) : null;
-        jsonaudit = FilteredAudit.Any() ? JsonConvert.SerializeObject(FilteredAudit) : null;
+        jsonEch = FilteredData.Any() ? JsonConvert.SerializeObject(FilteredData) : null;
+        jsonaudit = FilteredEche.Any() ? JsonConvert.SerializeObject(FilteredEche) : null;
 
         await JSRuntime.InvokeVoidAsync("resetDataTable1");
         await JSRuntime.InvokeVoidAsync("resetDataTable");
