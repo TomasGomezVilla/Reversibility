@@ -1,0 +1,104 @@
+﻿@page "/"
+
+@inject CustomAuthenticationStateProvider AuthProvider
+@inject NavigationManager Navigation
+
+<div class="login-container">
+    <h3 class="login-title">Login</h3>
+
+    <div class="input-group">
+        <label class="input-label">Username:</label>
+        <input class="input-field" @bind="username" />
+    </div>
+    <div class="input-group">
+        <label class="input-label">Password:</label>
+        <input class="input-field" @bind="password" type="password" />
+    </div>
+    <button class="login-button" @onclick="HandleLogin">Login</button>
+
+    <p class="error-message">@errorMessage</p>
+</div>
+
+<style>
+    .login-container {
+        width: 100%;
+        max-width: 400px;
+        margin: auto;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        background-color: #fff;
+    }
+
+    .login-title {
+        font-size: 24px;
+        font-weight: bold;
+        color: darkblue;
+        margin-bottom: 20px;
+    }
+
+    .input-group {
+        margin-bottom: 15px;
+        text-align: left;
+    }
+
+    .input-label {
+        display: block;
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+
+    .input-field {
+        width: 100%;
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+
+    .login-button {
+        width: 100%;
+        padding: 10px;
+        background-color: blue;
+        color: white;
+        font-weight: bold;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    .login-button:hover {
+        background-color: darkblue;
+    }
+
+
+    .error-message {
+        color: red;
+        font-weight: bold;
+        margin-top: 10px;
+    }
+</style>
+<p style="color: red">@errorMessage</p>
+
+@code {
+    private string username = "";
+    private string password = "";
+    private string errorMessage = "";
+
+    private async Task HandleLogin()
+    {
+        bool isAuthenticated = await AuthProvider.Login(username, password);
+
+        if (isAuthenticated)
+        {
+
+            Navigation.NavigateTo("/home", forceLoad: true);
+
+        }
+        else
+        {
+            errorMessage = "Invalid credentials";
+        }
+    }
+}
