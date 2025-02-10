@@ -1,0 +1,4 @@
+﻿/* ::deep pseudo-selector prevents Blazor to process .dt-layout-table (https://dev.to/netsi1964/blazor-css-isolation-a-shallow-look-at-it-280) */
+.global-trades-table-container ::deep .dt-layout-table {
+    overflow: auto;
+}
