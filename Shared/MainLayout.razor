@@ -7,7 +7,12 @@
         <NavMenu />
     </div>
 
-    <main>
+   <!--
+    - `flex-grow-1`: This class makes the `<main>` element grow to fill the available space in a flex container.
+    - `flex-shrink-0`: This class prevents the `main`// element from shrinking when there is not enough space.
+    - `overflow-hidden`: This class hides any content that overflows the boundaries of the `main` element.
+    -->
+    <main class="flex-grow-1 flex-shrink-0 overflow-hidden">
         <div class="top-row px-4">
             <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
         </div>
