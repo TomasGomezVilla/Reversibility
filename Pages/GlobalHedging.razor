@@ -1,0 +1,218 @@
+﻿@page "/GlobalHedging"
+@implements IDisposable
+@inject IJSRuntime JsRuntime
+@inject DatabaseService DatabaseService
+
+<PageTitle>Global Hedging</PageTitle>
+
+<div class="container-fluid mt-3">
+    <div>
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label for="instrument" class="form-label">Instrument</label>
+                <input type="text" class="form-control" id="instrument" name="instrument">
+            </div>
+            <div class="col-md-6">
+                <label for="portfolio" class="form-label">Portfolio</label>
+                <input type="text" class="form-control" id="portfolio" name="portfolio">
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label for="product-type" class="form-label">Product Type</label>
+                <input type="text" class="form-control" id="product-type" name="product-type">
+            </div>
+            <div class="col-md-6">
+                <label for="maturity-date" class="form-label">Maturity date</label>
+                <div class="input-group">
+                    <input type="date" class="form-control" id="maturity-date-start" name="maturity-date-start">
+                    <span class="input-group-text">to</span>
+                    <input type="date" name="maturity-date-end" id="maturity-date-end" class="form-control">
+                </div>
+            </div>
+        </div>
+        <div class="d-grid gap-2">
+            <button class="btn btn-primary" id="launch-button" @onclick="HandleFetchClick">Launch</button>
+        </div>
+    </div>
+
+    <div class="w-100 global-hedging-table-container">
+        <table id="global-hedging-table">
+            <thead>
+            <tr>
+                <th>Type</th>
+                <th>ProductType</th>
+                <th>Entity</th>
+                <th>Portfolio</th>
+                <th>HedgingLink</th>
+                <th>ARPSONRef</th>
+                <th>Instrument</th>
+                <th>ValueDate</th>
+                <th>MaturityDate</th>
+                <th>Ccy</th>
+                <th>Notionel</th>
+                <th>RateType</th>
+                <th>RateOrSpread</th>
+                <th>CreditSpread</th>
+                
+            </tr>
+            </thead>
+            <tbody>
+            @*Content of the table*@
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@code {
+    private const string GetPortfoliosQuery = "SELECT DISTINCT Portfolio FROM hedging";
+    private const string GetInstrumentsQuery = "SELECT DISTINCT Instrument FROM hedging";
+    private const string GetProductTypesQuery = "SELECT DISTINCT ProductType FROM hedging";
+    private const string GetGlobalHedgingQuery = "SELECT Type,ProductType,Entity,Portfolio,HedgingLink,ARPSONRef,Instrument,ValueDate,MaturityDate,Ccy,Notionel,RateType,RateOrSpread,CreditSpread from hedging";
+
+    // Self-reference to the component
+    private DotNetObjectReference<GlobalHedging>? _reference;
+
+    class Option
+    {
+        public string Value { get; set; }
+        public string Text { get; set; }
+    }
+
+    /// <summary>
+    /// Reference to the JavaScript module defined in GlobalHedging.razor.js
+    /// </summary>
+    private IJSObjectReference? _module;
+
+    /// <summary>
+    /// Convert dictionary values returned by the database service to an array of strings
+    /// </summary>
+    /// <param name="data">Data returned from the DatabaseService</param>
+    /// <param name="key">Target column</param>
+    /// <returns></returns>
+    private static string[] GetStringValues(IEnumerable<Dictionary<string, object>> data, string key)
+    {
+        return data.Select(d => d[key].ToString() ?? "").ToArray();
+    }
+
+    /// <summary>
+    /// Get an array of strings from the response of the distinct queries
+    /// </summary>
+    /// <param name="data">Data from distinct response</param>
+    /// <param name="key">Target column name</param>
+    /// <returns></returns>
+    private static string[]? GetStringArray(List<Dictionary<string, object>> data, string key)
+    {
+        return data.Any() ? GetStringValues(data, key) : null;
+    }
+
+    /// <summary>
+    /// Maps an array of strings into Option objects
+    /// </summary>
+    /// <param name="strings">Array of string with options</param>
+    /// <returns>An array of options</returns>
+    private static Option[]? StringsToOptions(string[]? strings)
+    {
+        return strings?.Select(s => new Option
+        {
+            Value = $"'{s}'",
+            Text = s
+        }).ToArray();
+    }
+
+    private void HandleFetchClick() =>
+        _module!.InvokeVoidAsync("handleFetchClick", _reference);
+
+    /// <summary>
+    /// Queries the database for the distinct values of the columns Portfolio, Instrument, and ProductType
+    /// </summary>
+    private async Task LoadMultiselectOptions()
+    {
+        var portfolios = DatabaseService.GetData(GetPortfoliosQuery);
+        var instruments = DatabaseService.GetData(GetInstrumentsQuery);
+        var productTypes = DatabaseService.GetData(GetProductTypesQuery);
+
+        var portfoliosArray = GetStringArray(portfolios, "Portfolio");
+        var instrumentsArray = GetStringArray(instruments, "Instrument");
+        var productArray = GetStringArray(productTypes, "ProductType");
+
+        // At this point, we have module property defined
+        await _module!.InvokeVoidAsync("initMultiSelect", new object?[]
+        {
+            StringsToOptions(portfoliosArray),
+            StringsToOptions(instrumentsArray),
+            StringsToOptions(productArray)
+        });
+    }
+
+    [JSInvokable]
+    public Task<List<string?[]>> LoadGlobalHedging(
+        string[] instrumentsFilter,
+        string[] portfolioFilters,
+        string[] productTypeFilters,
+        string? maturityDateStart,
+        string? maturityDateEnd
+    )
+    {
+        var finalQuery = new string(GetGlobalHedgingQuery);
+        var whereConditions = new List<string>();
+
+        if (instrumentsFilter.Any())
+        {
+            whereConditions.Add($"Instrument IN ({string.Join(",", instrumentsFilter)})");
+        }
+
+        if (portfolioFilters.Any())
+        {
+            whereConditions.Add($"Portfolio IN ({string.Join(",", portfolioFilters)})");
+        }
+
+        if (productTypeFilters.Any())
+        {
+            whereConditions.Add($"ProductType IN ({string.Join(",", productTypeFilters)})");
+        }
+        
+        if (!string.IsNullOrEmpty(maturityDateStart) && !string.IsNullOrEmpty(maturityDateEnd))
+        {
+            whereConditions.Add($"MaturityDate BETWEEN '{maturityDateStart}' AND '{maturityDateEnd}'");
+        }
+
+        if (whereConditions.Any())
+        {
+            finalQuery += $" WHERE {string.Join(" AND ", whereConditions)}";
+        }
+
+        var hedging = DatabaseService.GetData(finalQuery);
+
+        var listOfHedging = hedging.Select(t => t.Values.Select(v => v.ToString()).ToArray()).ToList();
+
+        return Task.FromResult(listOfHedging);
+    }
+
+    protected override void OnInitialized()
+    {
+        _reference = DotNetObjectReference.Create(this);
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            // Imports the JS module (https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules)
+            _module = await JsRuntime.InvokeAsync<IJSObjectReference>("import", "./Pages/GlobalHedging.razor.js");
+
+            // Invoke code inside the module, specifically the init() function
+            await _module.InvokeVoidAsync("init");
+
+            // Loads multi-selection options
+            await LoadMultiselectOptions();
+        }
+    }
+
+    public void Dispose()
+    {
+        _reference?.Dispose();
+        _module?.DisposeAsync();
+    }
+
+}
